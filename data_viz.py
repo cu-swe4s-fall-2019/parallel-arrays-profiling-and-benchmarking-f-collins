@@ -8,10 +8,10 @@ mpl.use('agg')
 """A number of functions that output various visualizations of input data.
 """
 def boxplot(L, out_file_name):
-    '''Creates a boxplot of the input data.
+    '''Creates a boxplot of each set of data in L.
 
     Parameters:
-        L: A list containing the input data
+        L: A list of lists, each list containing a set of data to be plotted.
         out_file_name: The filename to save the file as.
     '''
     if out_file_name is None:
@@ -19,11 +19,11 @@ def boxplot(L, out_file_name):
 
     fig = plt.figure(figsize=(5, 5), dpi=300)
 
-    ax = fig.add_subplot(1, 1, 1)
+    ax = fig.subplots()
     ax.boxplot(L)
 
-    fig.suptitle("mean: " + str(ml.list_mean(L)) + " stddev: " +
-                 str(ml.list_stdev(L)))
+    # fig.suptitle("mean: " + str(ml.list_mean(L)) + " stddev: " +
+                 # str(ml.list_stdev(L)))
 
     plt.savefig(out_file_name, bbox_inches='tight')
 
