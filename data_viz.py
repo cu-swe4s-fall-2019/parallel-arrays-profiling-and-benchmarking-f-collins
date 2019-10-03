@@ -25,7 +25,7 @@ def boxplot(L, out_file_name, title, plotlabels, xlabel, ylabel):
         print("Input data list not parellel to list of plot labels")
         return None
 
-    fig = plt.figure(figsize=(5, 5), dpi=300)
+    fig = plt.figure(figsize=(8, 5), dpi=300)
 
     ax = fig.subplots()
     ax.boxplot(L)
