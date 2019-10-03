@@ -8,7 +8,7 @@ mpl.use('agg')
 """A number of functions that output various visualizations of input data.
 """
 def boxplot(L, out_file_name, title, plotlabels, xlabel, ylabel):
-    '''Creates a boxplot of each set of data in L.
+    """Creates a boxplot of each set of data in L.
 
     Parameters:
         L: A list of lists, each list containing a set of data to be plotted.
@@ -17,8 +17,12 @@ def boxplot(L, out_file_name, title, plotlabels, xlabel, ylabel):
         plotlabels: A list of labels for each box plot, parallel to L
         xlabel: A label for the x-axis.
         ylabel: A label for the y-axis.
-    '''
+    """
     if out_file_name is None:
+        return None
+
+    if len(L) != len(plotlabels):
+        print("Input data list not parellel to list of plot labels")
         return None
 
     fig = plt.figure(figsize=(5, 5), dpi=300)
@@ -26,7 +30,7 @@ def boxplot(L, out_file_name, title, plotlabels, xlabel, ylabel):
     ax = fig.subplots()
     ax.boxplot(L)
     plt.title(title)
-    plt.xticks(range(1, len(plotlabels) + 1), plotlabels)
+    plt.xticks(range(1, len(plotlabels) + 1), plotlabels, rotation="vertical")
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
 
@@ -37,12 +41,12 @@ def boxplot(L, out_file_name, title, plotlabels, xlabel, ylabel):
 
 
 def histogram(L, out_file_name):
-    '''Creates a histogram of the input data.
+    """Creates a histogram of the input data.
 
     Parameters:
         L: A list containing the input data
         out_file_name: The filename to save the file as.
-    '''
+    """
     if out_file_name is None:
         return None
 
@@ -58,12 +62,12 @@ def histogram(L, out_file_name):
 
 
 def combo(L, out_file_name):
-    '''Creates a combination of a boxplot and a histogram of the input data.
+    """Creates a combination of a boxplot and a histogram of the input data.
 
     Parameters:
         L: A list containing the input data
         out_file_name: The filename to save the file as.
-    '''
+    """
     if out_file_name is None:
         return None
 
