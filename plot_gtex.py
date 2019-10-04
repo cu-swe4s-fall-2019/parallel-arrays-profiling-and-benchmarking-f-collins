@@ -1,6 +1,8 @@
 import data_viz
 import argparse
 import os
+import csv
+import gzip
 
 def linear_search(key, L):
     for index in range(len(L)):
@@ -73,6 +75,68 @@ def main():
         print('Group type is either SMTS or SMTSD, quitting.')
         quit(1)
 
+    sa_file = csv.reader(open("GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt", "r"), delimiter = "\t")                       
+    gr_file = csv.reader(gzip.open("GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz", "rt"), delimiter = "\t")
+    
+    sa_header = []
+    sampids = []
+    tissues = []
+    for row in sa_file:
+        if sa_header == []:
+            sa_header = row
+            i = 0
+            for entry in sa_header:
+                if entry == "SAMPID":
+                    sampidcol = i
+                elif entry == group_type:
+                    groupcol = i
+                i += 1
+            continue
+        sampids.append(row[sampidcol])
+        tissues.append(row[groupcol])
+
+    gr_header = []
+    dimension = []
+    samplenames = []
+    samplevals = []
+    genenamecol = 0
+    for row in gr_file:
+        if row[0][0] == "#":
+            continue
+        if dimension == []:
+            dimension = row
+            continue
+        if gr_header == []:
+            i = 0
+            gr_header = row
+            genenamecol = gr_header.index("Description")
+            for sample in gr_header[(genenamecol + 1):]:
+                samplenames.append(sample)
+            continue
+        
+        if row[genenamecol] == gene:
+            for expression in row[(genenamecol + 1):]:
+                samplevals.append(expression)
+
+    if samplevals == []:
+        print('Gene not found in gene readings, quitting.')
+        quit(1)
+
+    samplelocations = []
+    locationdata = []
+    iteminlist = 0
+    index = 0
+    for sampleid, tissue in zip(sampids, tissues):
+        if linear_search(tissue, samplelocations) == -1:
+            samplelocations.append(tissue)
+            locationdata.append([])
+
+        geneexpressindex = linear_search(sampleid, samplenames)
+
+        if geneexpressindex != -1:
+            locationdata[linear_search(tissue, samplelocations)].append(int(samplevals[geneexpressindex]))
+
+    data_viz.boxplot(locationdata, output_file, gene, samplelocations, group_type, "Gene read counts")
 
 
 if __name__ == '__main__':

@@ -13,3 +13,17 @@ assert_exit_code 1
 run wrong_gene_group python3 plot_gtex.py --gene_reads GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz --sample_attributes GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt --gene SDHB --group_type BADGROUP --output_file a.png
 assert_in_stdout 'Group type is either SMTS or SMTSD, quitting.'
 assert_exit_code 1
+
+FILE=testoutput.png
+run file_created python3 plot_gtex.py --gene_reads GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz --sample_attributes GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt --gene SDHB --group_type SMTS --output_file $FILE
+if test -f "$FILE"; then
+    FILEEXISTS=1
+else
+    FILEEXISTS=0
+fi
+assert_equal 1 $FILEEXISTS
+assert_exit_code 0
+if $FILEEXISTS; then
+    rm testoutput.png
+fi
+
