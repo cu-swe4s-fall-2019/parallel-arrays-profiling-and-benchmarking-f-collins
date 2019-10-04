@@ -23,11 +23,13 @@ class TestPlotGtex(unittest.TestCase):
     def test_binary_search_random_list(self):
         for x in range(100):
             L = []
+            i = 0
             for y in range(50):
                 num = random.randint(5 * y, 5 * y + 4)
-                L.append(num)
+                L.append([num, i])
+                i += 1
             location = random.randint(0, 49)
-            key = L[location]
+            key = L[location][0]
             self.assertEqual(pg.binary_search(key, L), location)
 
 
