@@ -5,7 +5,21 @@ import csv
 import gzip
 
 
+"""Script for outputting the gene expressions of a target gene as a set of
+boxplots.
+"""
+
+
 def linear_search(key, L):
+    """Searches a list linearly for a key.
+
+    Parameters:
+        Key: The value searched for.
+        L: The list searched.
+
+    Returns:
+        The index of the value found.
+    """
     for index in range(len(L)):
         if key == L[index]:
             return index
@@ -13,6 +27,16 @@ def linear_search(key, L):
 
 
 def binary_search(key, L):
+    """Searches a list for a key using the binary search method.
+
+    Parameters:
+        Key: The value searched for.
+        L: The list searched, each entry has a list containing the value and
+            the index to be returned.
+
+    Returns:
+        The index of the corresponding value.
+    """
     low = -1
     high = len(L)
 
