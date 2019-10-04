@@ -2,6 +2,7 @@ import unittest
 import random
 import plot_gtex as pg
 
+
 class TestPlotGtex(unittest.TestCase):
     def test_linear_search_empty_list(self):
         self.assertEqual(pg.linear_search(1, []), -1)
@@ -28,6 +29,7 @@ class TestPlotGtex(unittest.TestCase):
             location = random.randint(0, 49)
             key = L[location]
             self.assertEqual(pg.binary_search(key, L), location)
+
 
 if __name__ == "__main__":
     unittest.main()

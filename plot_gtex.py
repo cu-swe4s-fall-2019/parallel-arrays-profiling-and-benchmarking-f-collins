@@ -4,11 +4,13 @@ import os
 import csv
 import gzip
 
+
 def linear_search(key, L):
     for index in range(len(L)):
         if key == L[index]:
             return index
     return -1
+
 
 def binary_search(key, L):
     low = -1
@@ -26,11 +28,13 @@ def binary_search(key, L):
             high = mid
     return -1
 
+
 def main():
-    LINEAR_OR_BINARY = 0
+    LINEAR_OR_BINARY = 1    # 1 to use binary search, 0 to use linear search
     parser = argparse.ArgumentParser(
-            description='Program that outputs a boxplot of the expression' + \
-                        ' of a gene from either tissue groups or tissue types.',
+            description='Program that outputs a boxplot of the expression' +
+                        ' of a gene from either tissue groups or tissue ' +
+                        'types.',
             prog='geneexpressionplotter')
 
     parser.add_argument('--gene_reads',
@@ -67,16 +71,17 @@ def main():
     output_file = args.output_file
 
     if not os.path.exists(gene_reads) or not os.path.exists(sample_attributes):
-        print('Gene readings or sample attributes file does not exist or could not be read, quitting.')
+        print('Gene readings or sample attributes file does not exist or ' +
+              'could not be read, quitting.')
         quit(1)
 
     if group_type != "SMTS" and group_type != "SMTSD":
         print('Group type is either SMTS or SMTSD, quitting.')
         quit(1)
 
-    sa_file = csv.reader(open("GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt", "r"), delimiter = "\t")                       
-    gr_file = csv.reader(gzip.open("GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_reads.acmg_59.gct.gz", "rt"), delimiter = "\t")
-    
+    sa_file = csv.reader(open(sample_attributes, "r"), delimiter="\t")
+    gr_file = csv.reader(gzip.open(gene_reads, "rt"), delimiter="\t")
+
     sa_header = []
     sampids = []
     tissues = []
@@ -122,7 +127,6 @@ def main():
             for expression in row[(genenamecol + 1):]:
                 samplevals.append(expression)
 
-
     if samplevals == []:
         print('Gene not found in gene readings, quitting.')
         quit(1)
@@ -142,9 +146,11 @@ def main():
             geneexpressindex = binary_search(sampleid, samplenames)
 
         if geneexpressindex != -1:
-            locationdata[linear_search(tissue, samplelocations)].append(int(samplevals[geneexpressindex]))
+            val = int(samplevals[geneexpressindex])
+            locationdata[linear_search(tissue, samplelocations)].append(val)
 
-    data_viz.boxplot(locationdata, output_file, gene, samplelocations, group_type, "Gene read counts")
+    data_viz.boxplot(locationdata, output_file, gene, samplelocations,
+                     group_type, "Gene read counts")
 
 
 if __name__ == '__main__':

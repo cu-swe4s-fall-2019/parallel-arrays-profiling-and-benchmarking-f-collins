@@ -29,7 +29,8 @@ class TestDataViz(unittest.TestCase):
         for x in range(5):
             if x is not 0:
                 plotlabels.append(str(x))
-            L.append([random.randint(0,100), random.randint(0,100), random.randint(0,100)])
+            L.append([random.randint(0, 100), random.randint(0, 100),
+                     random.randint(0, 100)])
         dv.boxplot(L, outfile, "Title", plotlabels, "x", "y")
         os.remove(outfile)
 

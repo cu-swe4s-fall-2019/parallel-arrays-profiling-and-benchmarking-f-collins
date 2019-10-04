@@ -3,6 +3,8 @@ import math
 
 """Math functions for computing some statistical values
 """
+
+
 def list_mean(L):
     """Computes the mean of a list of numbers
 

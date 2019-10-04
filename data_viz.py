@@ -4,9 +4,9 @@ import math_lib as ml
 
 
 mpl.use('agg')
+"""A number of functions that output various visualizations of input data.  """
 
-"""A number of functions that output various visualizations of input data.
-"""
+
 def boxplot(L, out_file_name, title, plotlabels, xlabel, ylabel):
     """Creates a boxplot of each set of data in L.
 
@@ -35,7 +35,7 @@ def boxplot(L, out_file_name, title, plotlabels, xlabel, ylabel):
     plt.ylabel(ylabel)
 
     # fig.suptitle("mean: " + str(ml.list_mean(L)) + " stddev: " +
-                 # str(ml.list_stdev(L)))
+    # str(ml.list_stdev(L)))
 
     plt.savefig(out_file_name, bbox_inches='tight')
 
