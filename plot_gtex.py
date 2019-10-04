@@ -17,15 +17,14 @@ def binary_search(key, L):
     while high - low > 1:
         mid = (high + low) // 2
 
-        if key == L[mid]:
-            return mid
+        if key == L[mid][0]:
+            return L[mid][1]
 
-        elif key > L[mid]:
+        elif key > L[mid][0]:
             low = mid
         else:
             high = mid
     return -1
-
 
 def main():
     LINEAR_OR_BINARY = 0
@@ -111,12 +110,18 @@ def main():
             gr_header = row
             genenamecol = gr_header.index("Description")
             for sample in gr_header[(genenamecol + 1):]:
-                samplenames.append(sample)
-            continue
-        
+                if LINEAR_OR_BINARY == 0:
+                    samplenames.append(sample)
+                if LINEAR_OR_BINARY == 1:
+                    samplenames.append([sample, i])
+                    i += 1
+            if LINEAR_OR_BINARY == 1:
+                samplenames.sort(key=lambda tup: tup[0])
+
         if row[genenamecol] == gene:
             for expression in row[(genenamecol + 1):]:
                 samplevals.append(expression)
+
 
     if samplevals == []:
         print('Gene not found in gene readings, quitting.')
@@ -131,7 +136,10 @@ def main():
             samplelocations.append(tissue)
             locationdata.append([])
 
-        geneexpressindex = linear_search(sampleid, samplenames)
+        if LINEAR_OR_BINARY == 0:
+            geneexpressindex = linear_search(sampleid, samplenames)
+        if LINEAR_OR_BINARY == 1:
+            geneexpressindex = binary_search(sampleid, samplenames)
 
         if geneexpressindex != -1:
             locationdata[linear_search(tissue, samplelocations)].append(int(samplevals[geneexpressindex]))
